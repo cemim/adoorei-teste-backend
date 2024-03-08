@@ -10,4 +10,8 @@ class Sale extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    function products() {
+        return $this->belongsToMany(Product::class, 'product_sales')->withPivot(['amount']);
+    }
 }

@@ -84,4 +84,9 @@ class SaleController extends Controller
 
         return response()->json($sale);
     }
+
+    public function show(){
+        $sale = Sale::with('products')->get();
+        return response()->json($sale, 200, [], JSON_PRETTY_PRINT);
+    }
 }

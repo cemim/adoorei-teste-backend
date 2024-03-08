@@ -31,4 +31,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/venda/{id}', [SaleController::class,'find'])->name('sale.find');
 
     Route::post('/venda/{id}', [SaleController::class,'updateSale'])->name('sale.update');
+
+    Route::get('/vendas', [SaleController::class,'show'])->name('sale.show');
 });
