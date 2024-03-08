@@ -53,4 +53,35 @@ class SaleController extends Controller
 
         return response()->json($sale);
     }
+
+    public function updateSale(Request $request, $id){
+        $sale = Sale::findOrFail($id);
+
+        // Validação dos dados da requisição
+        $rules = [
+            '*.product_id' => 'required',
+            '*.amount' => 'required|integer|min:1',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()]);
+        }
+
+        foreach ($request->all() as $item) {
+            $product = Product::findOrFail($item['product_id']);
+
+            $sale->amount += $item['amount'];
+            $productSales = new ProductSales();
+            $productSales->product_id = $product->id;
+            $productSales->sale_id = $sale->id;
+            $productSales->amount = $item['amount'];
+            $productSales->save();
+        }
+
+        $sale->save();
+
+        return response()->json($sale);
+    }
 }

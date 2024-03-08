@@ -24,9 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'auth']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/produtos', [ProductController::class,'productList'])->name('products');
+    Route::get('/produtos', [ProductController::class,'productList'])->name('product.products');
 
-    Route::post('/nova/venda', [SaleController::class,'store'])->name('newSale');
+    Route::post('/nova/venda', [SaleController::class,'store'])->name('sale.newSale');
 
-    Route::get('/venda/{id}', [SaleController::class,'find'])->name('find');
+    Route::get('/venda/{id}', [SaleController::class,'find'])->name('sale.find');
+
+    Route::post('/venda/{id}', [SaleController::class,'updateSale'])->name('sale.update');
 });
