@@ -26,11 +26,13 @@ Route::post('/login', [AuthController::class, 'auth']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/produtos', [ProductController::class,'productList'])->name('product.products');
 
-    Route::post('/nova/venda', [SaleController::class,'store'])->name('sale.newSale');
+    Route::post('/venda/nova', [SaleController::class,'store'])->name('sale.newSale');
 
     Route::get('/venda/{id}', [SaleController::class,'find'])->name('sale.find');
 
     Route::post('/venda/{id}', [SaleController::class,'updateSale'])->name('sale.update');
 
     Route::get('/vendas', [SaleController::class,'show'])->name('sale.show');
+
+    Route::delete('/venda/cancelar/{id}', [SaleController::class,'delete'])->name('sale.delete');
 });

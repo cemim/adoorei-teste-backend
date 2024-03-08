@@ -89,4 +89,12 @@ class SaleController extends Controller
         $sale = Sale::with('products')->get();
         return response()->json($sale, 200, [], JSON_PRETTY_PRINT);
     }
+
+    public function delete($id){
+        $sale = Sale::findOrFail($id);
+
+        $sale->delete();
+
+        return response()->json($sale, 200, [], JSON_PRETTY_PRINT);
+    }
 }
