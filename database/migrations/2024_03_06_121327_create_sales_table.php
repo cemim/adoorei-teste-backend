@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->double('amount', 8, 2);
-            $table->bigInteger('product_id')->unsigned()->nullable();
-            $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

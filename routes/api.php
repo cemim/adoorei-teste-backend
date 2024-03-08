@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,6 @@ Route::post('/login', [AuthController::class, 'auth']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/produtos', [ProductController::class,'productList'])->name('products');
+
+    Route::post('/nova/venda', [SaleController::class,'store'])->name('newSale');
 });
