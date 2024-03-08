@@ -1,0 +1,523 @@
+{
+	"info": {
+		"_postman_id": "1c5334b3-474a-45a3-88d0-35bc1d1aeb56",
+		"name": "Adoorei Testes",
+		"description": "# About this collection\n\nThis collection helps ensure your API continues to work as expected after updates or changes. It contains sample requests for a series of tests that validate different aspects of an API, including:\n\n1. **Status code verification:** We'll check if the API returns the expected status codes for various requests, ensuring reliability and proper error handling.\n2. **JSON schema verification:** We'll make sure the JSON response conforms to a specified JSON Schema, ensuring API contracts are honored.\n3. **Response time verification:** We'll verify that the API's response time is within the acceptable range, providing a smooth user experience and optimizing performance.\n4. **Response body verification:** We'll validate the structure and content of the response body for accuracy, ensuring the integrity of the data and preventing potential issues downstream.\n5. **Header verification:** We'll confirm the presence and correct values of specific headers in the response, enabling secure and well-structured communication between your app and its users.\n    \n\n## **Using this collection**\n\n**Step 1:** Send the sample requests and view the response and test results.\n\n**Step 2:** Replace the sample request URLs with your desired API endpoints.\n\n**Step 3:** Customize the tests in the \"Tests\" tab if needed. Don't forget to save your changes.\n\n**Step 4:** Run the collection by selecting \"Run\".\n\n### Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12965086"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"api@teste.com\",\r\n    \"password\": \"teste\",\r\n    \"device_name\": \"Postman Tests\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "The test on this request asserts that the reponse has a \"200 OK\" status.\n\nYou can check for any HTTP status code using the same mechanism, for example `pm.response.to.have.status(403)` if your API should return an \"Unauthorized\" response."
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Produtos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const postRequest = {\r",
+							"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+							"    method: \"POST\",\r",
+							"    body:{\r",
+							"        mode: \"raw\",\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"json\"\r",
+							"            }\r",
+							"        },\r",
+							"        raw: JSON.stringify({\r",
+							"            email: \"api@teste.com\",\r",
+							"            password: \"teste\",\r",
+							"            device_name: \"Postman Tests\"\r",
+							"        })        \r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.sendRequest(postRequest, function(err, res){\r",
+							"    let responseJson = res.json()    \r",
+							"    let auth = responseJson[\"token\"]\r",
+							"    pm.globals.set(\"token\", auth)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/produtos",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"produtos"
+					]
+				},
+				"description": "This request has a test using Postman's built-in support for JSON Schema verification to ensure that the response data matches the expected shape.\n\nSchema validation can be used to verify your API returns data in the right format, without worrying about the exact values. This might be helpful when testing various inputs for a consistent output format.\n\nLearn more about JSON Schema at [https://json-schema.org](https://json-schema.org/.)."
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Venda",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const postRequest = {\r",
+							"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+							"    method: \"POST\",\r",
+							"    body:{\r",
+							"        mode: \"raw\",\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"json\"\r",
+							"            }\r",
+							"        },\r",
+							"        raw: JSON.stringify({\r",
+							"            email: \"api@teste.com\",\r",
+							"            password: \"teste\",\r",
+							"            device_name: \"Postman Tests\"\r",
+							"        })        \r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.sendRequest(postRequest, function(err, res){\r",
+							"    let responseJson = res.json()    \r",
+							"    let auth = responseJson[\"token\"]\r",
+							"    pm.globals.set(\"token\", auth)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " [\r\n{\r\n      \"product_id\": 1,\r\n      \"amount\": 1\r\n},\r\n{\r\n      \"product_id\": 2,\r\n      \"amount\": 2\r\n}\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/venda/nova",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"venda",
+						"nova"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Venda",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const postRequest = {\r",
+							"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+							"    method: \"POST\",\r",
+							"    body:{\r",
+							"        mode: \"raw\",\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"json\"\r",
+							"            }\r",
+							"        },\r",
+							"        raw: JSON.stringify({\r",
+							"            email: \"api@teste.com\",\r",
+							"            password: \"teste\",\r",
+							"            device_name: \"Postman Tests\"\r",
+							"        })        \r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.sendRequest(postRequest, function(err, res){\r",
+							"    let responseJson = res.json()    \r",
+							"    let auth = responseJson[\"token\"]\r",
+							"    pm.globals.set(\"token\", auth)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/venda/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"venda",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar Produtos a Venda",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const postRequest = {\r",
+							"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+							"    method: \"POST\",\r",
+							"    body:{\r",
+							"        mode: \"raw\",\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"json\"\r",
+							"            }\r",
+							"        },\r",
+							"        raw: JSON.stringify({\r",
+							"            email: \"api@teste.com\",\r",
+							"            password: \"teste\",\r",
+							"            device_name: \"Postman Tests\"\r",
+							"        })        \r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.sendRequest(postRequest, function(err, res){\r",
+							"    let responseJson = res.json()    \r",
+							"    let auth = responseJson[\"token\"]\r",
+							"    pm.globals.set(\"token\", auth)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " [\r\n{\r\n      \"product_id\": 1,\r\n      \"amount\": 1\r\n},\r\n{\r\n      \"product_id\": 2,\r\n      \"amount\": 2\r\n}\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/venda/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"venda",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Vendas",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const postRequest = {\r",
+							"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+							"    method: \"POST\",\r",
+							"    body:{\r",
+							"        mode: \"raw\",\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"json\"\r",
+							"            }\r",
+							"        },\r",
+							"        raw: JSON.stringify({\r",
+							"            email: \"api@teste.com\",\r",
+							"            password: \"teste\",\r",
+							"            device_name: \"Postman Tests\"\r",
+							"        })        \r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.sendRequest(postRequest, function(err, res){\r",
+							"    let responseJson = res.json()    \r",
+							"    let auth = responseJson[\"token\"]\r",
+							"    pm.globals.set(\"token\", auth)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/vendas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"vendas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar Venda",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const postRequest = {\r",
+							"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+							"    method: \"POST\",\r",
+							"    body:{\r",
+							"        mode: \"raw\",\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"json\"\r",
+							"            }\r",
+							"        },\r",
+							"        raw: JSON.stringify({\r",
+							"            email: \"api@teste.com\",\r",
+							"            password: \"teste\",\r",
+							"            device_name: \"Postman Tests\"\r",
+							"        })        \r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.sendRequest(postRequest, function(err, res){\r",
+							"    let responseJson = res.json()    \r",
+							"    let auth = responseJson[\"token\"]\r",
+							"    pm.globals.set(\"token\", auth)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/venda/cancelar/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"venda",
+						"cancelar",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://postman-echo.com"
+		}
+	]
+}
