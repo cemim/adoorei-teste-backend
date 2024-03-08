@@ -8,5 +8,6 @@
 - Acessar em [Localhost](http://localhost/)
 - `docker exec -it teste-adoorei-php83 sh -c  "cd /var/www/html && php artisan migrate:fresh"`
 - `docker exec -it teste-adoorei-php83 sh -c  "cd /var/www/html && php artisan db:seed --class=ProductsTableSeeder"`
+- `docker exec -it teste-adoorei-php83 sh -c  "cd /var/www/html && php artisan db:seed --class=CreateUserSeeder"`
 
 
