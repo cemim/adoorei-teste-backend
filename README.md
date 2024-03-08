@@ -17,5 +17,6 @@
     - `docker exec -it teste-adoorei-php83 sh -c  "cd /var/www/html && php artisan db:seed --class=ProductsTableSeeder"`
     - `docker exec -it teste-adoorei-php83 sh -c  "cd /var/www/html && php artisan db:seed --class=CreateUserSeeder"`
 - Documentação da API para o postman está no arquivo [Postman JSON](<Adoorei Testes.postman_collection.json>)
+- Link do projeto [Aqui](https://github.com/users/cemim/projects/2/views/1)
 
 
