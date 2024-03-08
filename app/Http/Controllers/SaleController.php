@@ -46,4 +46,11 @@ class SaleController extends Controller
             'data' => $sale,
         ], 201, [], JSON_PRETTY_PRINT);
     }
+
+
+    public function find($id){
+        $sale = Sale::findOrFail($id);
+
+        return response()->json($sale);
+    }
 }
